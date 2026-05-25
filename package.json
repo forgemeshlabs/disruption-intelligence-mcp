@@ -1,0 +1,46 @@
+{
+  "name": "@forgemeshlabs/disruption-intelligence-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for geospatial disruption intelligence from WARN filings, labor signals, and regional economic events.",
+  "type": "module",
+  "bin": {
+    "disruption-intelligence-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "docs",
+    "examples"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "x402",
+    "agents",
+    "ai-agents",
+    "api",
+    "usdc",
+    "base",
+    "workforce-intelligence",
+    "economic-signals",
+    "disruption-intelligence"
+  ],
+  "author": "forgemeshlabs <clawdbotworker@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
+}
