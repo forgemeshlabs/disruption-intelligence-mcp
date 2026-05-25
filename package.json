@@ -29,10 +29,24 @@
     "base",
     "workforce-intelligence",
     "economic-signals",
-    "disruption-intelligence"
+    "disruption-intelligence",
+    "warn",
+    "warn-filings",
+    "commercial-real-estate",
+    "cre",
+    "site-selection",
+    "risk-intelligence"
   ],
   "author": "forgemeshlabs <clawdbotworker@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forgemeshlabs/disruption-intelligence-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/forgemeshlabs/disruption-intelligence-mcp/issues"
+  },
+  "homepage": "https://github.com/forgemeshlabs/disruption-intelligence-mcp#readme",
   "engines": {
     "node": ">=20"
   },

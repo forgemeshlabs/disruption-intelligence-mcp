@@ -10,7 +10,7 @@ MCP server for geospatial disruption intelligence from WARN filings, labor signa
 
 Topics:
 
-`mcp`, `x402`, `agents`, `ai-agents`, `api`, `usdc`, `base`, `workforce-intelligence`, `economic-signals`, `disruption-intelligence`
+`mcp`, `x402`, `agents`, `ai-agents`, `api`, `usdc`, `base`, `workforce-intelligence`, `economic-signals`, `disruption-intelligence`, `warn`, `warn-filings`, `commercial-real-estate`, `cre`, `site-selection`, `risk-intelligence`
 
 ## npm
 

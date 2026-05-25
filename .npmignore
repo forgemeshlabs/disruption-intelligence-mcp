@@ -6,5 +6,3 @@ node_modules/
 .env.*
 .git/
 .github/
-.agents/
-.codex/
