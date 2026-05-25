@@ -41,7 +41,7 @@
     "geospatial-intelligence",
     "signal-api"
   ],
-  "author": "forgemeshlabs <clawdbotworker@gmail.com>",
+  "author": "forgemeshlabs",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -51,6 +51,9 @@
     "url": "https://github.com/forgemeshlabs/disruption-intelligence-mcp/issues"
   },
   "homepage": "https://github.com/forgemeshlabs/disruption-intelligence-mcp#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20"
   },
