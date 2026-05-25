@@ -4,7 +4,7 @@
   "description": "MCP server for geospatial disruption intelligence from WARN filings, labor signals, and regional economic events.",
   "type": "module",
   "bin": {
-    "disruption-intelligence-mcp": "./dist/index.js"
+    "disruption-intelligence-mcp": "dist/index.js"
   },
   "files": [
     "dist",
