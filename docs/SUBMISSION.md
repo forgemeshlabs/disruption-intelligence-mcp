@@ -18,9 +18,21 @@ Package name:
 
 `@forgemeshlabs/disruption-intelligence-mcp`
 
+Status:
+
+Published as `0.1.0`.
+
+URL:
+
+https://www.npmjs.com/package/@forgemeshlabs/disruption-intelligence-mcp
+
+Install:
+
+`npx -y @forgemeshlabs/disruption-intelligence-mcp`
+
 Keywords:
 
-`mcp`, `x402`, `agents`, `ai-agents`, `api`, `usdc`, `base`, `workforce-intelligence`, `economic-signals`, `disruption-intelligence`
+`mcp`, `model-context-protocol`, `x402`, `agent-payments`, `disruption-intelligence`, `market-intelligence`, `commercial-intelligence`, `location-intelligence`, `risk-intelligence`, `enterprise-risk`, `economic-signals`, `warn`, `warn-filings`, `layoffs`, `commercial-real-estate`, `cre`, `site-selection`, `competitive-intelligence`, `geospatial-intelligence`, `signal-api`
 
 ## Marketplace Description
 

@@ -18,7 +18,15 @@ The MCP package does not contain engine internals, scoring logic, ingestion arch
 npm install -g @forgemeshlabs/disruption-intelligence-mcp
 ```
 
-Until the package is published, run from a local checkout:
+Published package:
+
+https://www.npmjs.com/package/@forgemeshlabs/disruption-intelligence-mcp
+
+Source repo:
+
+https://github.com/forgemeshlabs/disruption-intelligence-mcp
+
+Local development:
 
 ```bash
 npm install
