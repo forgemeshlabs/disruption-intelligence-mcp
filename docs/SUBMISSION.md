@@ -20,7 +20,11 @@ Package name:
 
 Status:
 
-Published as `0.1.1`.
+Published as `0.1.2`.
+
+Official MCP registry:
+
+`io.github.forgemeshlabs/disruption-intelligence-mcp@0.1.2`
 
 URL:
 
