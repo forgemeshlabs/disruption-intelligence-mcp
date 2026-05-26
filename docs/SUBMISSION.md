@@ -20,7 +20,7 @@ Package name:
 
 Status:
 
-Published as `0.1.0`.
+Published as `0.1.1`.
 
 URL:
 
