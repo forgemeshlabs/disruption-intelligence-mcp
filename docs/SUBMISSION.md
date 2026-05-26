@@ -6,11 +6,11 @@ Repository: `forgemeshlabs/disruption-intelligence-mcp`
 
 Description:
 
-MCP server for geospatial disruption intelligence from WARN filings, labor signals, and regional economic events.
+AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
 Topics:
 
-`mcp`, `x402`, `agents`, `ai-agents`, `api`, `usdc`, `base`, `workforce-intelligence`, `economic-signals`, `disruption-intelligence`, `warn`, `warn-filings`, `commercial-real-estate`, `cre`, `site-selection`, `risk-intelligence`
+`mcp`, `model-context-protocol`, `x402`, `agent-payments`, `disruption-intelligence`, `market-intelligence`, `commercial-intelligence`, `location-intelligence`, `risk-intelligence`, `enterprise-risk`, `economic-signals`, `warn`, `warn-filings`, `layoffs`, `commercial-real-estate`, `cre`, `site-selection`, `competitive-intelligence`, `geospatial-intelligence`, `signal-api`
 
 ## npm
 
@@ -38,11 +38,11 @@ Keywords:
 
 Short:
 
-Connect AI agents to hosted Disruption Intelligence APIs for regional disruption, company context, and event timeline lookups with x402 challenge-first paid endpoint support.
+AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
 Long:
 
-Disruption Intelligence MCP is a public, thin MCP wrapper around the hosted Disruption Intelligence API. It lets agents inspect service health, read discovery metadata, and request geospatial disruption intelligence from WARN filings, labor signals, and regional economic events. Paid endpoints default to safe, non-settling x402 challenge inspection, so agents can understand price and payment requirements without handling private keys or initiating settlement inside the MCP server.
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through a public MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 ## Sample Prompts
 

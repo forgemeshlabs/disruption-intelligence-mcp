@@ -1,6 +1,8 @@
 # Disruption Intelligence MCP
 
-Public MCP server for geospatial disruption intelligence from WARN filings, labor signals, and regional economic events.
+AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
+
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through a public MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 This package is a thin client around the hosted API:
 
