@@ -1,6 +1,6 @@
 {
   "name": "@forgemeshlabs/disruption-intelligence-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI-native commercial disruption intelligence for MCP clients and x402-powered agents.",
   "type": "module",
   "bin": {
