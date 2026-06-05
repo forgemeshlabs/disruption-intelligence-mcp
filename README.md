@@ -2,7 +2,7 @@
 
 AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
-Disruption Intelligence MCP gives AI agents access to commercial disruption signals through a public MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 This package is a thin client around the hosted API:
 
@@ -66,7 +66,13 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 | `analyze_territory_disruption` | `GET /territory/:zip/disruption?radius=` | Paid; challenge-first by default |
 | `search_company_context` | `GET /companies/search?q=` | Paid; challenge-first by default |
 | `get_company_risk_summary` | `GET /companies/:id/intelligence` | Paid; challenge-first by default |
+| `get_event_severity` | `GET /events/:id/severity` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
+| `get_event_company_intel` | `GET /events/:id/company-intel` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
 | `get_event_timeline` | `GET /events/:id/timeline` | Paid; challenge-first by default |
+
+## Industry Classification Output
+
+Paid event-level API responses now include `industry_classification` when event context is available. The hosted API returns the industry label, NAICS fields when present, derivation method, confidence level, source text when relevant, and a coverage note. The MCP remains a thin client: it does not infer industries locally and does not rewrite hosted WARN data.
 
 ## Free vs Paid Behavior
 
@@ -91,9 +97,9 @@ X402_NETWORK=
 
 Those values are not required in v1 and should not be pasted into chat, logs, or MCP client prompts.
 
-## Public API Docs
+## API Docs
 
-Public API docs and product context:
+API docs and product context:
 
 https://github.com/forgemeshlabs/disruption-intelligence
 
@@ -103,4 +109,4 @@ https://disruption.forgemesh.io
 
 ## Security Boundary
 
-This repository is public-facing only. It is a thin client wrapper around the hosted API. It intentionally excludes engine code, scoring formulas, ingestion internals, database details, operational topology, wallet addresses, private keys, and secrets.
+This repository is an agent-facing thin client wrapper around the hosted API. It intentionally excludes engine code, scoring formulas, ingestion internals, database details, operational topology, wallet addresses, private keys, and secrets.

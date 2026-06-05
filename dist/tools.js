@@ -11,7 +11,7 @@ export const tools = [
     },
     {
         name: "get_discovery_metadata",
-        description: "Fetch public discovery metadata from index.json, llms.txt, openapi.json, and x402 well-known metadata. Free.",
+        description: "Fetch free discovery metadata from index.json, llms.txt, openapi.json, and x402 well-known metadata. Free.",
         inputSchema: {
             type: "object",
             properties: {},
@@ -75,7 +75,37 @@ export const tools = [
             properties: {
                 id: {
                     type: "string",
-                    description: "Public company identifier accepted by the hosted API."
+                    description: "Company identifier accepted by the hosted API."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: "get_event_severity",
+        description: "Thin wrapper for GET /events/:id/severity. Paid endpoint; enriched paid responses include industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        inputSchema: {
+            type: "object",
+            required: ["id"],
+            properties: {
+                id: {
+                    type: "string",
+                    description: "Event identifier accepted by the hosted API."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: "get_event_company_intel",
+        description: "Thin wrapper for GET /events/:id/company-intel. Paid endpoint; enriched paid responses include event industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        inputSchema: {
+            type: "object",
+            required: ["id"],
+            properties: {
+                id: {
+                    type: "string",
+                    description: "Event identifier accepted by the hosted API."
                 }
             },
             additionalProperties: false
@@ -90,7 +120,7 @@ export const tools = [
             properties: {
                 id: {
                     type: "string",
-                    description: "Public event identifier accepted by the hosted API."
+                    description: "Event identifier accepted by the hosted API."
                 }
             },
             additionalProperties: false
@@ -117,6 +147,14 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
         case "get_company_risk_summary": {
             const id = requiredStringArg(args, "id");
             return client.get(`/companies/${encodeURIComponent(id)}/intelligence`);
+        }
+        case "get_event_severity": {
+            const id = requiredStringArg(args, "id");
+            return client.get(`/events/${encodeURIComponent(id)}/severity`);
+        }
+        case "get_event_company_intel": {
+            const id = requiredStringArg(args, "id");
+            return client.get(`/events/${encodeURIComponent(id)}/company-intel`);
         }
         case "get_event_timeline": {
             const id = requiredStringArg(args, "id");
