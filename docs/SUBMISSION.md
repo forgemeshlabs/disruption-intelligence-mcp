@@ -20,11 +20,11 @@ Package name:
 
 Status:
 
-Published as `0.1.3`.
+Published as `0.1.4`.
 
 Official MCP registry:
 
-`io.github.forgemeshlabs/disruption-intelligence-mcp@0.1.3`
+`io.github.forgemeshlabs/disruption-intelligence-mcp@0.1.4`
 
 URL:
 
@@ -46,7 +46,7 @@ AI-native commercial disruption intelligence for MCP clients and x402-powered ag
 
 Long:
 
-Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, gold convergence signals, operational sector-impact unlocks, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 ## Sample Prompts
 
@@ -58,6 +58,9 @@ Disruption Intelligence MCP gives AI agents access to commercial disruption sign
 - "Get the event severity signal for this disruption event ID and show the industry classification confidence."
 - "Get company intelligence for this event and include the industry classification coverage note."
 - "Get the event timeline for this disruption event ID."
+- "Search gold signal inventory for procurement opportunities without unlocking paid details."
+- "Inspect the x402 challenge for gold convergence signals about freight."
+- "Get the gold sector-impact unlock challenge for this signal ID."
 
 ## Safety And Privacy Notes
 

@@ -125,6 +125,81 @@ export const tools = [
             },
             additionalProperties: false
         }
+    },
+    {
+        name: "search_gold_inventory",
+        description: "Free inventory-only search for commercially useful gold convergence signals. Returns counts and unlock pricing without revealing signal details.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                q: {
+                    type: "string",
+                    description: "Optional commercial angle, company, region, or industry search query."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: "get_gold_signals",
+        description: "Thin wrapper for GET /gold/signals. Paid endpoint currently priced at $0.10; returns distilled commercial convergence signals and sector-impact inventory, challenge-first by default.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                q: {
+                    type: "string",
+                    description: "Optional commercial angle, company, region, or industry search query."
+                },
+                limit: {
+                    type: "number",
+                    description: "Maximum signals to return. Hosted API caps this at 10."
+                },
+                state: {
+                    type: "string",
+                    enum: ["gold", "watchlist"],
+                    description: "Signal state to request. Defaults to gold."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: "get_gold_brief",
+        description: "Thin wrapper for GET /gold/brief. Paid endpoint currently priced at $0.10; returns a bounded commercial convergence brief, challenge-first by default.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                q: {
+                    type: "string",
+                    description: "Optional commercial angle, company, region, or industry search query."
+                },
+                scope: {
+                    type: "string",
+                    enum: ["all", "gold", "watchlist"],
+                    description: "Brief scope. Defaults to all on the hosted API."
+                },
+                limit: {
+                    type: "number",
+                    description: "Maximum delivered signals to include. Hosted API caps this at 10."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: "get_gold_sector_impacts",
+        description: "Thin wrapper for GET /gold/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
+        inputSchema: {
+            type: "object",
+            required: ["id"],
+            properties: {
+                id: {
+                    type: "string",
+                    description: "Gold signal UUID."
+                }
+            },
+            additionalProperties: false
+        }
     }
 ];
 export async function callTool(name, args = {}, client = new DisruptionApiClient()) {
@@ -159,6 +234,27 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
         case "get_event_timeline": {
             const id = requiredStringArg(args, "id");
             return client.get(`/events/${encodeURIComponent(id)}/timeline`);
+        }
+        case "search_gold_inventory": {
+            return client.get(withQuery("/gold/search", { q: stringArg(args, "q") }));
+        }
+        case "get_gold_signals": {
+            return client.get(withQuery("/gold/signals", {
+                q: stringArg(args, "q"),
+                limit: numberArg(args, "limit"),
+                state: enumArg(args, "state", ["gold", "watchlist"])
+            }));
+        }
+        case "get_gold_brief": {
+            return client.get(withQuery("/gold/brief", {
+                q: stringArg(args, "q"),
+                scope: enumArg(args, "scope", ["all", "gold", "watchlist"]),
+                limit: numberArg(args, "limit")
+            }));
+        }
+        case "get_gold_sector_impacts": {
+            const id = requiredStringArg(args, "id");
+            return client.get(`/gold/signals/${encodeURIComponent(id)}/sector-impacts`);
         }
         default:
             throw new Error(`Unknown tool: ${name}`);
@@ -206,5 +302,25 @@ function numberArg(args, key) {
         throw new Error(`Expected ${key} to be a finite number`);
     }
     return value;
+}
+function enumArg(args, key, allowed) {
+    const value = args[key];
+    if (value === undefined) {
+        return undefined;
+    }
+    if (typeof value !== "string" || !allowed.includes(value)) {
+        throw new Error(`Expected ${key} to be one of: ${allowed.join(", ")}`);
+    }
+    return value;
+}
+function withQuery(path, params) {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+        if (value !== undefined) {
+            query.set(key, String(value));
+        }
+    }
+    const encoded = query.toString();
+    return encoded ? `${path}?${encoded}` : path;
 }
 //# sourceMappingURL=tools.js.map
