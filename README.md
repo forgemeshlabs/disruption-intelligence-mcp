@@ -2,7 +2,7 @@
 
 AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
-Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, gold convergence signals, operational sector-impact unlocks, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, Ripple Signals, Ripple Paths, Disruption Intelligence Ripple Reports, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 This package is a thin client around the hosted API:
 
@@ -69,16 +69,16 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 | `get_event_severity` | `GET /events/:id/severity` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
 | `get_event_company_intel` | `GET /events/:id/company-intel` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
 | `get_event_timeline` | `GET /events/:id/timeline` | Paid; challenge-first by default |
-| `search_gold_inventory` | `GET /gold/search?q=` | Free; inventory counts and unlock pricing only |
-| `get_gold_signals` | `GET /gold/signals?q=&limit=&state=` | Paid at $0.10; challenge-first by default; returns distilled convergence signals after settlement |
-| `get_gold_brief` | `GET /gold/brief?q=&scope=&limit=` | Paid at $0.10; challenge-first by default; returns bounded commercial convergence brief after settlement |
-| `get_gold_sector_impacts` | `GET /gold/signals/:id/sector-impacts` | Paid at $0.15; challenge-first by default; returns operational spend and downstream sector impacts after settlement |
+| `search_gold_inventory` | `GET /ripple/search?q=` | Compatibility tool name; free Ripple inventory counts and unlock pricing only |
+| `get_gold_signals` | `GET /ripple/signals?q=&limit=&state=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns Ripple Signals after settlement |
+| `get_gold_brief` | `GET /ripple/brief?q=&scope=&limit=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns a Disruption Intelligence Ripple Report after settlement |
+| `get_gold_sector_impacts` | `GET /ripple/signals/:id/sector-impacts` | Compatibility tool name; paid at $0.15; challenge-first by default; returns Ripple Paths after settlement |
 
-## Gold Signal Output
+## Ripple Output
 
-Free gold search is intentionally inventory-only. It returns counts, freshness, and unlock pricing without exposing commercial angles, evidence categories, source mix, signal IDs, company names, or raw source records.
+Free Ripple search is intentionally inventory-only. It returns counts, freshness, and unlock pricing without exposing commercial angles, evidence categories, source mix, signal IDs, company names, or raw source records.
 
-Paid gold endpoints expose distilled commercial intelligence. `get_gold_signals` returns signal summaries, confidence bands, compact evidence labels, and a `sector_impact_inventory` count with an unlock endpoint. `get_gold_sector_impacts` unlocks the deeper operational map for one signal, including downstream spend categories such as fuel, food service, uniforms, maintenance, IT, logistics, office supplies, telecom, insurance, legal, cleaning, travel, and related vendor categories.
+Paid Ripple endpoints expose distilled commercial intelligence. `get_gold_signals` returns Ripple Signal summaries, confidence bands, compact evidence labels, and Ripple Path inventory with an unlock endpoint. `get_gold_sector_impacts` unlocks the deeper operational map for one signal, including downstream spend categories such as fuel, food service, uniforms, maintenance, IT, logistics, office supplies, telecom, insurance, legal, cleaning, travel, and related vendor categories.
 
 ## Industry Classification Output
 
