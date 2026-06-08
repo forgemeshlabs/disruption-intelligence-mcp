@@ -128,7 +128,7 @@ export const tools = [
     },
     {
         name: "search_gold_inventory",
-        description: "Free inventory-only search for commercially useful gold convergence signals. Returns counts and unlock pricing without revealing signal details.",
+        description: "Compatibility tool for free inventory-only Ripple Signal search. Returns counts and unlock pricing without revealing signal details.",
         inputSchema: {
             type: "object",
             properties: {
@@ -142,7 +142,7 @@ export const tools = [
     },
     {
         name: "get_gold_signals",
-        description: "Thin wrapper for GET /gold/signals. Paid endpoint currently priced at $0.10; returns distilled commercial convergence signals and sector-impact inventory, challenge-first by default.",
+        description: "Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
         inputSchema: {
             type: "object",
             properties: {
@@ -165,7 +165,7 @@ export const tools = [
     },
     {
         name: "get_gold_brief",
-        description: "Thin wrapper for GET /gold/brief. Paid endpoint currently priced at $0.10; returns a bounded commercial convergence brief, challenge-first by default.",
+        description: "Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.10; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
         inputSchema: {
             type: "object",
             properties: {
@@ -188,14 +188,14 @@ export const tools = [
     },
     {
         name: "get_gold_sector_impacts",
-        description: "Thin wrapper for GET /gold/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
+        description: "Compatibility tool for GET /ripple/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns Ripple Paths with deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
         inputSchema: {
             type: "object",
             required: ["id"],
             properties: {
                 id: {
                     type: "string",
-                    description: "Gold signal UUID."
+                    description: "Ripple signal UUID."
                 }
             },
             additionalProperties: false
@@ -236,17 +236,17 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
             return client.get(`/events/${encodeURIComponent(id)}/timeline`);
         }
         case "search_gold_inventory": {
-            return client.get(withQuery("/gold/search", { q: stringArg(args, "q") }));
+            return client.get(withQuery("/ripple/search", { q: stringArg(args, "q") }));
         }
         case "get_gold_signals": {
-            return client.get(withQuery("/gold/signals", {
+            return client.get(withQuery("/ripple/signals", {
                 q: stringArg(args, "q"),
                 limit: numberArg(args, "limit"),
                 state: enumArg(args, "state", ["gold", "watchlist"])
             }));
         }
         case "get_gold_brief": {
-            return client.get(withQuery("/gold/brief", {
+            return client.get(withQuery("/ripple/brief", {
                 q: stringArg(args, "q"),
                 scope: enumArg(args, "scope", ["all", "gold", "watchlist"]),
                 limit: numberArg(args, "limit")
@@ -254,7 +254,7 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
         }
         case "get_gold_sector_impacts": {
             const id = requiredStringArg(args, "id");
-            return client.get(`/gold/signals/${encodeURIComponent(id)}/sector-impacts`);
+            return client.get(`/ripple/signals/${encodeURIComponent(id)}/sector-impacts`);
         }
         default:
             throw new Error(`Unknown tool: ${name}`);
