@@ -165,7 +165,7 @@ export const tools = [
     },
     {
         name: "get_gold_brief",
-        description: "Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.10; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
+        description: "Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.25; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
         inputSchema: {
             type: "object",
             properties: {

@@ -71,7 +71,7 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 | `get_event_timeline` | `GET /events/:id/timeline` | Paid; challenge-first by default |
 | `search_gold_inventory` | `GET /ripple/search?q=` | Compatibility tool name; free Ripple inventory counts and unlock pricing only |
 | `get_gold_signals` | `GET /ripple/signals?q=&limit=&state=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns Ripple Signals after settlement |
-| `get_gold_brief` | `GET /ripple/brief?q=&scope=&limit=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns a Disruption Intelligence Ripple Report after settlement |
+| `get_gold_brief` | `GET /ripple/brief?q=&scope=&limit=` | Compatibility tool name; paid at $0.25; challenge-first by default; returns a Disruption Intelligence Ripple Report after settlement |
 | `get_gold_sector_impacts` | `GET /ripple/signals/:id/sector-impacts` | Compatibility tool name; paid at $0.15; challenge-first by default; returns Ripple Paths after settlement |
 
 ## Ripple Output
