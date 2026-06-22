@@ -30,14 +30,6 @@ Environment variables schema:
       "description": "Base URL for the Disruption Intelligence API.",
       "type": "string",
       "default": "https://disruption.forgemesh.io"
-    },
-    "X402_NETWORK": {
-      "description": "Optional network identifier for future paid execution.",
-      "type": "string"
-    },
-    "X402_PRIVATE_KEY": {
-      "description": "Optional private key for future paid execution.",
-      "type": "string"
     }
   },
   "required": []
@@ -47,5 +39,5 @@ Environment variables schema:
 Runtime notes:
 
 - Transport: stdio
-- Authentication: optional environment variables only
+- Authentication: no private keys or API credentials required
 - No inbound HTTP port is required

@@ -141,6 +141,29 @@ export const tools = [
         }
     },
     {
+        name: "get_ripple_index",
+        description: "Thin wrapper for GET /ripple/index. Paid endpoint currently priced at $0.01; returns location-only Ripple index cards with signal IDs, bands, and unlock URLs while withholding companies, employee counts, commercial angles, and impact paths.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                q: {
+                    type: "string",
+                    description: "Optional region, state, or broad signal search query."
+                },
+                scope: {
+                    type: "string",
+                    enum: ["all", "gold", "watchlist"],
+                    description: "Index scope. Defaults to all on the hosted API."
+                },
+                limit: {
+                    type: "number",
+                    description: "Maximum index cards to return. Hosted API caps this at 25."
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
         name: "get_gold_signals",
         description: "Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
         inputSchema: {
@@ -237,6 +260,13 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
         }
         case "search_gold_inventory": {
             return client.get(withQuery("/ripple/search", { q: stringArg(args, "q") }));
+        }
+        case "get_ripple_index": {
+            return client.get(withQuery("/ripple/index", {
+                q: stringArg(args, "q"),
+                scope: enumArg(args, "scope", ["all", "gold", "watchlist"]),
+                limit: numberArg(args, "limit")
+            }));
         }
         case "get_gold_signals": {
             return client.get(withQuery("/ripple/signals", {

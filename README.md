@@ -2,7 +2,7 @@
 
 AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
-Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, Ripple Signals, Ripple Paths, Disruption Intelligence Ripple Reports, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
+Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, location-only Ripple Index cards, Ripple Signals, Ripple Paths, Disruption Intelligence Ripple Reports, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
 
 This package is a thin client around the hosted API:
 
@@ -70,6 +70,7 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 | `get_event_company_intel` | `GET /events/:id/company-intel` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
 | `get_event_timeline` | `GET /events/:id/timeline` | Paid; challenge-first by default |
 | `search_gold_inventory` | `GET /ripple/search?q=` | Compatibility tool name; free Ripple inventory counts and unlock pricing only |
+| `get_ripple_index` | `GET /ripple/index?q=&scope=&limit=` | Paid at $0.01; challenge-first by default; returns location-only Ripple index cards |
 | `get_gold_signals` | `GET /ripple/signals?q=&limit=&state=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns Ripple Signals after settlement |
 | `get_gold_brief` | `GET /ripple/brief?q=&scope=&limit=` | Compatibility tool name; paid at $0.25; challenge-first by default; returns a Disruption Intelligence Ripple Report after settlement |
 | `get_gold_sector_impacts` | `GET /ripple/signals/:id/sector-impacts` | Compatibility tool name; paid at $0.15; challenge-first by default; returns Ripple Paths after settlement |
@@ -77,6 +78,8 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 ## Ripple Output
 
 Free Ripple search is intentionally inventory-only. It returns counts, freshness, and unlock pricing without exposing commercial angles, evidence categories, source mix, signal IDs, company names, or raw source records.
+
+`get_ripple_index` unlocks a low-cost location-only index for choosing where to dig next. It can return signal IDs, event IDs, regions, states, signal types, freshness/depth/confidence/score bands, and unlock URLs, while withholding company names, employee counts, commercial angles, sector names, spend areas, source records, and impact paths.
 
 Paid Ripple endpoints expose distilled commercial intelligence. `get_gold_signals` returns Ripple Signal summaries, confidence bands, compact evidence labels, and Ripple Path inventory with an unlock endpoint. `get_gold_sector_impacts` unlocks the deeper operational map for one signal, including downstream spend categories such as fuel, food service, uniforms, maintenance, IT, logistics, office supplies, telecom, insurance, legal, cleaning, travel, and related vendor categories.
 
@@ -98,14 +101,7 @@ Future paid execution should be opt-in and delegated to a trusted wallet or paym
 DISRUPTION_API_BASE=https://disruption.forgemesh.io
 ```
 
-Future optional environment names may include:
-
-```bash
-X402_PRIVATE_KEY=
-X402_NETWORK=
-```
-
-Those values are not required in v1 and should not be pasted into chat, logs, or MCP client prompts.
+No wallet private key is required or accepted by this package. Paid endpoint calls return x402 challenge metadata for an external wallet or payment client to settle.
 
 ## API Docs
 
