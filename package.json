@@ -1,6 +1,6 @@
 {
   "name": "@forgemeshlabs/disruption-intelligence-mcp",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "mcpName": "io.github.forgemeshlabs/disruption-intelligence-mcp",
   "description": "AI-native commercial disruption intelligence for MCP clients and x402-powered agents.",
   "type": "module",
@@ -70,6 +70,6 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "@modelcontextprotocol/sdk": "^1.30.0"
   }
 }
