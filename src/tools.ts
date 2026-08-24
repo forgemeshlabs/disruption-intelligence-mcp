@@ -2,15 +2,31 @@ import { DisruptionApiClient, type ApiRequestResult } from "./client.js";
 
 type JsonObject = Record<string, unknown>;
 
+export type McpToolAnnotations = {
+  readOnlyHint: boolean;
+  destructiveHint: boolean;
+  idempotentHint: boolean;
+  openWorldHint: boolean;
+};
+
 export type McpTool = {
   name: string;
   description: string;
   inputSchema: JsonObject;
+  annotations: McpToolAnnotations;
+};
+
+const READ_ONLY_EXTERNAL: McpToolAnnotations = {
+  readOnlyHint: true,
+  destructiveHint: false,
+  idempotentHint: false,
+  openWorldHint: true,
 };
 
 export const tools: McpTool[] = [
   {
     name: "get_api_status",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Check the hosted Disruption Intelligence API health endpoint. Free.",
     inputSchema: {
       type: "object",
@@ -20,6 +36,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_discovery_metadata",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Fetch free discovery metadata from index.json, llms.txt, openapi.json, and x402 well-known metadata. Free.",
     inputSchema: {
       type: "object",
@@ -29,6 +46,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "inspect_x402_challenge",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Make an unpaid request to a paid endpoint and return the structured x402 payment challenge. Does not settle payment.",
     inputSchema: {
       type: "object",
@@ -43,6 +61,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "analyze_territory_disruption",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /territory/:zip/disruption?radius=. Paid endpoint; returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -62,6 +81,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "search_company_context",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /companies/search?q=. Paid endpoint; returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -77,6 +97,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_company_risk_summary",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /companies/:id/intelligence. Paid endpoint; returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -93,6 +114,7 @@ export const tools: McpTool[] = [
 
   {
     name: "get_event_severity",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /events/:id/severity. Paid endpoint; enriched paid responses include industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -108,6 +130,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_event_company_intel",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /events/:id/company-intel. Paid endpoint; enriched paid responses include event industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -123,6 +146,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_event_timeline",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /events/:id/timeline. Paid endpoint; returns x402 challenge in default non-settling mode.",
     inputSchema: {
       type: "object",
@@ -138,6 +162,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "search_gold_inventory",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Compatibility tool for free inventory-only Ripple Signal search. Returns counts and unlock pricing without revealing signal details.",
     inputSchema: {
       type: "object",
@@ -152,6 +177,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_ripple_index",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Thin wrapper for GET /ripple/index. Paid endpoint currently priced at $0.01; returns location-only Ripple index cards with signal IDs, bands, and unlock URLs while withholding companies, employee counts, commercial angles, and impact paths.",
     inputSchema: {
       type: "object",
@@ -175,6 +201,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_gold_signals",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
     inputSchema: {
       type: "object",
@@ -198,6 +225,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_gold_brief",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.25; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
     inputSchema: {
       type: "object",
@@ -221,6 +249,7 @@ export const tools: McpTool[] = [
   },
   {
     name: "get_gold_sector_impacts",
+    annotations: READ_ONLY_EXTERNAL,
     description: "Compatibility tool for GET /ripple/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns Ripple Paths with deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
     inputSchema: {
       type: "object",
