@@ -1,6 +1,7 @@
 # Disruption Intelligence MCP
 
 [![M8ven Score](https://m8ven.ai/badge/mcp/forgemeshlabs-disruption-intelligence-mcp-pro7g7)](https://m8ven.ai/mcp/forgemeshlabs-disruption-intelligence-mcp-pro7g7)
+[![mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/forgemeshlabs/disruption-intelligence-mcp)
 
 AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
