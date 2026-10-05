@@ -1,5 +1,8 @@
 # Disruption Intelligence MCP
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/forgemeshlabs-disruption-intelligence-mcp-pro7g7)](https://m8ven.ai/mcp/forgemeshlabs-disruption-intelligence-mcp-pro7g7)
+[![mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/forgemeshlabs/disruption-intelligence-mcp)
+
 AI-native commercial disruption intelligence for MCP clients and x402-powered agents.
 
 Disruption Intelligence MCP gives AI agents access to commercial disruption signals through an MCP server backed by the hosted Forgemesh API. It supports WARN/layoff intelligence, company context, geospatial territory disruption, location-only Ripple Index cards, Ripple Signals, Ripple Paths, Disruption Intelligence Ripple Reports, x402 payment challenge inspection, and economic signal workflows without exposing private scoring logic, ingestion systems, schemas, or infrastructure.
