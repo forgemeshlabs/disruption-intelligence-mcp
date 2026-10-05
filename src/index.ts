@@ -7,7 +7,7 @@ import { callTool, tools } from "./tools.js";
 const server = new Server(
   {
     name: "disruption-intelligence-mcp",
-    version: "0.1.4"
+    version: "0.1.8"
   },
   {
     capabilities: {
