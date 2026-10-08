@@ -6,12 +6,12 @@
     "url": "https://github.com/forgemeshlabs/disruption-intelligence-mcp",
     "source": "github"
   },
-  "version": "0.1.8",
+  "version": "0.1.9",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@forgemeshlabs/disruption-intelligence-mcp",
-      "version": "0.1.8",
+      "version": "0.1.9",
       "transport": {
         "type": "stdio"
       },
