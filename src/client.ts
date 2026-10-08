@@ -9,7 +9,7 @@ const { createGuard } = createRequire(import.meta.url)("../x402-guard.cjs") as {
     fetchBounded(url: string, init?: Record<string, unknown>): Promise<BoundedResponse>;
   };
 };
-const guard = createGuard({ baseUrl: DEFAULT_API_BASE, payTo: ["0x0000000000000000000000000000000000000000"] });
+const guard = createGuard({ baseUrl: DEFAULT_API_BASE, payTo: [] });
 
 type BoundedResponse = { status: number; ok: boolean; headers: Headers; text: string };
 
