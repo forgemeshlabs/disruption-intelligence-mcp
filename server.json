@@ -15,15 +15,7 @@
       "transport": {
         "type": "stdio"
       },
-      "environmentVariables": [
-        {
-          "name": "DISRUPTION_API_BASE",
-          "description": "Optional hosted API base URL override. Defaults to https://disruption.forgemesh.io.",
-          "isRequired": false,
-          "isSecret": false,
-          "format": "string"
-        }
-      ]
+      "environmentVariables": []
     }
   ],
   "icons": [
