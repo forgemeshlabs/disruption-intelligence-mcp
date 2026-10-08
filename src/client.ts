@@ -1,4 +1,17 @@
+import { createRequire } from "node:module";
+
 export const DEFAULT_API_BASE = "https://disruption.forgemesh.io";
+
+// Vendored CJS guard: bounded (60s / 2 MB / no redirects), same-origin-only fetch. This server never signs
+// payments, so the payTo allowlist is a placeholder required by createGuard.
+const { createGuard } = createRequire(import.meta.url)("../x402-guard.cjs") as {
+  createGuard(opts: { baseUrl: string; payTo: string[] }): {
+    fetchBounded(url: string, init?: Record<string, unknown>): Promise<BoundedResponse>;
+  };
+};
+const guard = createGuard({ baseUrl: DEFAULT_API_BASE, payTo: ["0x0000000000000000000000000000000000000000"] });
+
+type BoundedResponse = { status: number; ok: boolean; headers: Headers; text: string };
 
 export type ApiRequestResult =
   | {
@@ -39,13 +52,13 @@ export type DiscoveryMetadata = {
 export class DisruptionApiClient {
   readonly apiBase: string;
 
-  constructor(apiBase = process.env.DISRUPTION_API_BASE ?? DEFAULT_API_BASE) {
+  constructor(apiBase = DEFAULT_API_BASE) {
     this.apiBase = normalizeBaseUrl(apiBase);
   }
 
   async get(path: string): Promise<ApiRequestResult> {
     const url = this.url(path);
-    const response = await fetch(url, {
+    const response = await guard.fetchBounded(url, {
       method: "GET",
       headers: {
         accept: "application/json, text/plain;q=0.8, */*;q=0.1",
@@ -53,7 +66,7 @@ export class DisruptionApiClient {
       }
     });
 
-    const data = await parseResponseBody(response);
+    const data = parseBodyText(response.text, response.headers.get("content-type") ?? undefined);
 
     if (response.status === 402) {
       return {
@@ -72,7 +85,7 @@ export class DisruptionApiClient {
         status: response.status,
         url,
         paymentRequired: false,
-        error: data
+        error: response.text.slice(0, 200)
       };
     }
 
@@ -89,7 +102,7 @@ export class DisruptionApiClient {
     const resources = await Promise.all(
       paths.map(async (path) => {
         const url = this.url(path);
-        const response = await fetch(url, {
+        const response = await guard.fetchBounded(url, {
           method: "GET",
           headers: {
             accept: "application/json, text/plain;q=0.8, */*;q=0.1",
@@ -97,8 +110,7 @@ export class DisruptionApiClient {
           }
         });
         const contentType = response.headers.get("content-type") ?? undefined;
-        const body = await response.text();
-        const parsed = parseBodyText(body, contentType);
+        const parsed = parseBodyText(response.text, contentType);
 
         return {
           path,
@@ -127,12 +139,6 @@ function normalizeBaseUrl(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-async function parseResponseBody(response: Response): Promise<unknown> {
-  const contentType = response.headers.get("content-type") ?? undefined;
-  const body = await response.text();
-  return parseBodyText(body, contentType);
-}
-
 function parseBodyText(body: string, contentType?: string): unknown {
   if (!body) {
     return null;
@@ -158,7 +164,7 @@ function parseBodyText(body: string, contentType?: string): unknown {
   return body;
 }
 
-function buildPaymentChallenge(response: Response): PaymentChallenge {
+function buildPaymentChallenge(response: BoundedResponse): PaymentChallenge {
   const headers = paymentHeaders(response.headers);
   const encodedChallenge = headers["payment-required"];
   const decoded = encodedChallenge ? decodeBase64Json(encodedChallenge) : undefined;

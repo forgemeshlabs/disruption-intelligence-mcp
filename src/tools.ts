@@ -53,7 +53,9 @@ export const tools: McpTool[] = [
       properties: {
         endpoint: {
           type: "string",
-          description: "Paid endpoint path to inspect. Defaults to /territory/77001/disruption?radius=50."
+          description: "Paid endpoint path to inspect, on the Disruption Intelligence API only (letters, digits, / . _ -; no query string). Defaults to /territory/77001/disruption?radius=50.",
+          maxLength: 201,
+          pattern: "^/[A-Za-z0-9/._-]{1,200}$"
         }
       },
       additionalProperties: false
@@ -69,6 +71,7 @@ export const tools: McpTool[] = [
       properties: {
         zip: {
           type: "string",
+          pattern: "^[0-9]{5}$",
           description: "US ZIP code to analyze."
         },
         radius: {
@@ -89,6 +92,7 @@ export const tools: McpTool[] = [
       properties: {
         q: {
           type: "string",
+          maxLength: 2000,
           description: "Company search query."
         }
       },
@@ -105,6 +109,8 @@ export const tools: McpTool[] = [
       properties: {
         id: {
           type: "string",
+          maxLength: 128,
+          pattern: "^[A-Za-z0-9._-]{1,128}$",
           description: "Company identifier accepted by the hosted API."
         }
       },
@@ -122,6 +128,8 @@ export const tools: McpTool[] = [
       properties: {
         id: {
           type: "string",
+          maxLength: 128,
+          pattern: "^[A-Za-z0-9._-]{1,128}$",
           description: "Event identifier accepted by the hosted API."
         }
       },
@@ -138,6 +146,8 @@ export const tools: McpTool[] = [
       properties: {
         id: {
           type: "string",
+          maxLength: 128,
+          pattern: "^[A-Za-z0-9._-]{1,128}$",
           description: "Event identifier accepted by the hosted API."
         }
       },
@@ -154,6 +164,8 @@ export const tools: McpTool[] = [
       properties: {
         id: {
           type: "string",
+          maxLength: 128,
+          pattern: "^[A-Za-z0-9._-]{1,128}$",
           description: "Event identifier accepted by the hosted API."
         }
       },
@@ -169,6 +181,7 @@ export const tools: McpTool[] = [
       properties: {
         q: {
           type: "string",
+          maxLength: 2000,
           description: "Optional commercial angle, company, region, or industry search query."
         }
       },
@@ -184,6 +197,7 @@ export const tools: McpTool[] = [
       properties: {
         q: {
           type: "string",
+          maxLength: 2000,
           description: "Optional region, state, or broad signal search query."
         },
         scope: {
@@ -208,6 +222,7 @@ export const tools: McpTool[] = [
       properties: {
         q: {
           type: "string",
+          maxLength: 2000,
           description: "Optional commercial angle, company, region, or industry search query."
         },
         limit: {
@@ -232,6 +247,7 @@ export const tools: McpTool[] = [
       properties: {
         q: {
           type: "string",
+          maxLength: 2000,
           description: "Optional commercial angle, company, region, or industry search query."
         },
         scope: {
@@ -257,6 +273,8 @@ export const tools: McpTool[] = [
       properties: {
         id: {
           type: "string",
+          maxLength: 128,
+          pattern: "^[A-Za-z0-9._-]{1,128}$",
           description: "Ripple signal UUID."
         }
       },
@@ -272,9 +290,9 @@ export async function callTool(name: string, args: JsonObject = {}, client = new
     case "get_discovery_metadata":
       return client.getDiscoveryMetadata();
     case "inspect_x402_challenge":
-      return inspectChallenge(client, stringArg(args, "endpoint") ?? "/territory/77001/disruption?radius=50");
+      return inspectChallenge(client, endpointArg(args));
     case "analyze_territory_disruption": {
-      const zip = requiredStringArg(args, "zip");
+      const zip = requiredStringArg(args, "zip", /^[0-9]{5}$/);
       const radius = numberArg(args, "radius") ?? 50;
       return client.get(`/territory/${encodeURIComponent(zip)}/disruption?radius=${encodeURIComponent(String(radius))}`);
     }
@@ -283,19 +301,19 @@ export async function callTool(name: string, args: JsonObject = {}, client = new
       return client.get(`/companies/search?q=${encodeURIComponent(q)}`);
     }
     case "get_company_risk_summary": {
-      const id = requiredStringArg(args, "id");
+      const id = requiredStringArg(args, "id", ID_PATTERN);
       return client.get(`/companies/${encodeURIComponent(id)}/intelligence`);
     }
     case "get_event_severity": {
-      const id = requiredStringArg(args, "id");
+      const id = requiredStringArg(args, "id", ID_PATTERN);
       return client.get(`/events/${encodeURIComponent(id)}/severity`);
     }
     case "get_event_company_intel": {
-      const id = requiredStringArg(args, "id");
+      const id = requiredStringArg(args, "id", ID_PATTERN);
       return client.get(`/events/${encodeURIComponent(id)}/company-intel`);
     }
     case "get_event_timeline": {
-      const id = requiredStringArg(args, "id");
+      const id = requiredStringArg(args, "id", ID_PATTERN);
       return client.get(`/events/${encodeURIComponent(id)}/timeline`);
     }
     case "search_gold_inventory": {
@@ -323,7 +341,7 @@ export async function callTool(name: string, args: JsonObject = {}, client = new
       }));
     }
     case "get_gold_sector_impacts": {
-      const id = requiredStringArg(args, "id");
+      const id = requiredStringArg(args, "id", ID_PATTERN);
       return client.get(`/ripple/signals/${encodeURIComponent(id)}/sector-impacts`);
     }
     default:
@@ -349,10 +367,37 @@ async function inspectChallenge(client: DisruptionApiClient, endpoint: string): 
   };
 }
 
-function requiredStringArg(args: JsonObject, key: string): string {
+const MAX_TEXT = 2000;
+const ID_PATTERN = /^[A-Za-z0-9._-]{1,128}$/;
+const ENDPOINT_PATTERN = /^\/[A-Za-z0-9/._-]{1,200}$/;
+const DEFAULT_INSPECT_ENDPOINT = "/territory/77001/disruption?radius=50";
+
+function requiredStringArg(args: JsonObject, key: string, pattern?: RegExp): string {
   const value = args[key];
   if (typeof value !== "string" || value.trim() === "") {
     throw new Error(`Missing required string argument: ${key}`);
+  }
+  checkString(key, value, pattern);
+  return value;
+}
+
+function checkString(key: string, value: string, pattern?: RegExp): void {
+  if (value.length > MAX_TEXT) {
+    throw new Error(`${key} must be at most ${MAX_TEXT} characters`);
+  }
+  if (pattern && !pattern.test(value)) {
+    throw new Error(`${key} has an invalid format`);
+  }
+}
+
+// inspect_x402_challenge may only probe a plain path on the hard-coded API base.
+function endpointArg(args: JsonObject): string {
+  const value = stringArg(args, "endpoint");
+  if (value === undefined) {
+    return DEFAULT_INSPECT_ENDPOINT;
+  }
+  if (!ENDPOINT_PATTERN.test(value) || value.split("/").includes("..")) {
+    throw new Error("endpoint must be a plain path on the API (letters, digits, / . _ - only)");
   }
   return value;
 }
@@ -365,6 +410,7 @@ function stringArg(args: JsonObject, key: string): string | undefined {
   if (typeof value !== "string" || value.trim() === "") {
     throw new Error(`Expected ${key} to be a non-empty string`);
   }
+  checkString(key, value);
   return value;
 }
 
@@ -375,6 +421,9 @@ function numberArg(args: JsonObject, key: string): number | undefined {
   }
   if (typeof value !== "number" || !Number.isFinite(value)) {
     throw new Error(`Expected ${key} to be a finite number`);
+  }
+  if (Math.abs(value) > 1_000_000) {
+    throw new Error(`Expected ${key} to be between -1000000 and 1000000`);
   }
   return value;
 }

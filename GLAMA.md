@@ -25,13 +25,7 @@ Environment variables schema:
 ```json
 {
   "type": "object",
-  "properties": {
-    "DISRUPTION_API_BASE": {
-      "description": "Base URL for the Disruption Intelligence API.",
-      "type": "string",
-      "default": "https://disruption.forgemesh.io"
-    }
-  },
+  "properties": {},
   "required": []
 }
 ```

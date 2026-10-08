@@ -2,12 +2,15 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+import { readFileSync } from "node:fs";
 import { callTool, tools } from "./tools.js";
+
+const { version } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
 
 const server = new Server(
   {
     name: "disruption-intelligence-mcp",
-    version: "0.1.9"
+    version
   },
   {
     capabilities: {
@@ -19,15 +22,20 @@ const server = new Server(
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const result = await callTool(request.params.name, isObject(request.params.arguments) ? request.params.arguments : {});
-  return {
-    content: [
-      {
-        type: "text",
-        text: JSON.stringify(result, null, 2)
-      }
-    ]
-  };
+  try {
+    const result = await callTool(request.params.name, isObject(request.params.arguments) ? request.params.arguments : {});
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { isError: true, content: [{ type: "text", text: message.slice(0, 500) }] };
+  }
 });
 
 const transport = new StdioServerTransport();

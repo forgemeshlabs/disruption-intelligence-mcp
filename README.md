@@ -48,10 +48,7 @@ Example config:
   "mcpServers": {
     "disruption-intelligence": {
       "command": "npx",
-      "args": ["@forgemeshlabs/disruption-intelligence-mcp"],
-      "env": {
-        "DISRUPTION_API_BASE": "https://disruption.forgemesh.io"
-      }
+      "args": ["@forgemeshlabs/disruption-intelligence-mcp"]
     }
   }
 }
@@ -100,9 +97,7 @@ Future paid execution should be opt-in and delegated to a trusted wallet or paym
 
 ## Configuration
 
-```bash
-DISRUPTION_API_BASE=https://disruption.forgemesh.io
-```
+No environment variables are read. The API base URL is fixed to `https://disruption.forgemesh.io`; every request is bounded (60 s timeout, 2 MB response cap, no redirects) and `inspect_x402_challenge` only accepts a plain path on that host.
 
 No wallet private key is required or accepted by this package. Paid endpoint calls return x402 challenge metadata for an external wallet or payment client to settle.
 

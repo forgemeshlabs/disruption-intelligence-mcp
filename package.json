@@ -9,6 +9,7 @@
   },
   "files": [
     "dist",
+    "x402-guard.cjs",
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md",
@@ -70,6 +71,6 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0"
+    "@modelcontextprotocol/sdk": "^1.32.1"
   }
 }
