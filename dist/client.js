@@ -3,7 +3,7 @@ export const DEFAULT_API_BASE = "https://disruption.forgemesh.io";
 // Vendored CJS guard: bounded (60s / 2 MB / no redirects), same-origin-only fetch. This server never signs
 // payments, so the payTo allowlist is a placeholder required by createGuard.
 const { createGuard } = createRequire(import.meta.url)("../x402-guard.cjs");
-const guard = createGuard({ baseUrl: DEFAULT_API_BASE, payTo: ["0x0000000000000000000000000000000000000000"] });
+const guard = createGuard({ baseUrl: DEFAULT_API_BASE, payTo: [] });
 export class DisruptionApiClient {
     apiBase;
     constructor(apiBase = DEFAULT_API_BASE) {
