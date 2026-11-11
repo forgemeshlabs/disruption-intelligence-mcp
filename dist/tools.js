@@ -46,7 +46,7 @@ export const tools = [
     {
         name: "analyze_territory_disruption",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /territory/:zip/disruption?radius=. Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "Territory layoff risk score: WARN Act workforce-disruption summary around a US ZIP code (GET /territory/:zip/disruption?radius=). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["zip"],
@@ -67,7 +67,7 @@ export const tools = [
     {
         name: "search_company_context",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /companies/search?q=. Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "WARN Act layoffs company search: search employers that have filed WARN Act layoff notices (GET /companies/search?q=). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["q"],
@@ -84,7 +84,7 @@ export const tools = [
     {
         name: "get_company_risk_summary",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /companies/:id/intelligence. Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "Company layoff risk intelligence: risk tier, event count, average severity and downstream sector impacts for one employer (GET /companies/:id/intelligence). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -102,7 +102,7 @@ export const tools = [
     {
         name: "get_event_severity",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /events/:id/severity. Paid endpoint; enriched paid responses include industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        description: "WARN layoff severity score: composite severity score and risk tier for one WARN Act notice (GET /events/:id/severity). Paid endpoint; enriched paid responses include industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -120,7 +120,7 @@ export const tools = [
     {
         name: "get_event_company_intel",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /events/:id/company-intel. Paid endpoint; enriched paid responses include event industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        description: "Layoff event company intelligence: the employer behind one WARN Act notice (GET /events/:id/company-intel). Paid endpoint; enriched paid responses include event industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -138,7 +138,7 @@ export const tools = [
     {
         name: "get_event_timeline",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /events/:id/timeline. Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "WARN layoff event timeline: one notice with version history, status transitions and related events (GET /events/:id/timeline). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -172,7 +172,7 @@ export const tools = [
     {
         name: "get_ripple_index",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Thin wrapper for GET /ripple/index. Paid endpoint currently priced at $0.01; returns location-only Ripple index cards with signal IDs, bands, and unlock URLs while withholding companies, employee counts, commercial angles, and impact paths.",
+        description: "Layoff ripple signal index (GET /ripple/index). Paid endpoint currently priced at $0.01; returns location-only Ripple index cards with signal IDs, bands, and unlock URLs while withholding companies, employee counts, commercial angles, and impact paths.",
         inputSchema: {
             type: "object",
             properties: {
@@ -197,7 +197,7 @@ export const tools = [
     {
         name: "get_gold_signals",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
+        description: "Layoff ripple signals: downstream business effects of workforce disruption. Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
         inputSchema: {
             type: "object",
             properties: {
@@ -222,7 +222,7 @@ export const tools = [
     {
         name: "get_gold_brief",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.25; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
+        description: "Layoff ripple report. Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.25; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
         inputSchema: {
             type: "object",
             properties: {
@@ -247,7 +247,7 @@ export const tools = [
     {
         name: "get_gold_sector_impacts",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Compatibility tool for GET /ripple/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns Ripple Paths with deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
+        description: "Layoff sector impact paths for one Ripple signal. Compatibility tool for GET /ripple/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns Ripple Paths with deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
         inputSchema: {
             type: "object",
             required: ["id"],
