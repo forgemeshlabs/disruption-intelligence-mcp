@@ -46,7 +46,7 @@ export const tools = [
     {
         name: "analyze_territory_disruption",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Territory layoff risk score: WARN Act workforce-disruption summary around a US ZIP code (GET /territory/:zip/disruption?radius=). Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "Territory layoff size index: workforce-disruption summary around a US ZIP code (GET /territory/:zip/disruption?radius=, $0.10). Returns as_of, a coverage block and a summary with disruption_score (a simple heuristic size index, 0-100), total_events, total_employees_affected, top industries and the largest filings. No geocoded notices in range is refused unpaid. Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["zip"],
@@ -58,7 +58,7 @@ export const tools = [
                 },
                 radius: {
                     type: "number",
-                    description: "Search radius in miles. Defaults to 50."
+                    description: "Search radius in miles (max 500). Defaults to 100 on the hosted API."
                 }
             },
             additionalProperties: false
@@ -67,7 +67,7 @@ export const tools = [
     {
         name: "search_company_context",
         annotations: READ_ONLY_EXTERNAL,
-        description: "WARN Act layoffs company search: search employers that have filed WARN Act layoff notices (GET /companies/search?q=). Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "WARN Act layoffs company search: search the 4,389 employers that have filed WARN Act layoff notices in 40 US states (GET /companies/search?q=, $0.01). q needs at least 2 characters. Returns data (matching companies), total and as_of; no match is answered 404 unpaid. Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["q"],
@@ -75,7 +75,7 @@ export const tools = [
                 q: {
                     type: "string",
                     maxLength: 2000,
-                    description: "Company search query."
+                    description: "Company name, at least 2 characters."
                 }
             },
             additionalProperties: false
@@ -84,7 +84,7 @@ export const tools = [
     {
         name: "get_company_risk_summary",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Company layoff risk intelligence: risk tier, event count, average severity and downstream sector impacts for one employer (GET /companies/:id/intelligence). Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "Company layoff risk intelligence: heuristic workforce-disruption rollup for one employer (GET /companies/:id/intelligence, $0.05). Returns as_of and data with risk_tier, event_count, severity_avg, partial_inputs and business_sector_impacts (a static table keyed on the employer industry, empty when unknown). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -93,7 +93,7 @@ export const tools = [
                     type: "string",
                     maxLength: 128,
                     pattern: "^[A-Za-z0-9._-]{1,128}$",
-                    description: "Company identifier accepted by the hosted API."
+                    description: "Company UUID (from the company search)."
                 }
             },
             additionalProperties: false
@@ -102,7 +102,7 @@ export const tools = [
     {
         name: "get_event_severity",
         annotations: READ_ONLY_EXTERNAL,
-        description: "WARN layoff severity score: composite severity score and risk tier for one WARN Act notice (GET /events/:id/severity). Paid endpoint; enriched paid responses include industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        description: "WARN layoff severity score: heuristic composite severity score (0-100) and risk tier for one WARN Act notice (GET /events/:id/severity, $0.01). Returns composite_score, risk_tier, scored_at, partial_inputs (components the source did not report) and industry_classification. Notices with too little data to score are refused unpaid. Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -111,7 +111,7 @@ export const tools = [
                     type: "string",
                     maxLength: 128,
                     pattern: "^[A-Za-z0-9._-]{1,128}$",
-                    description: "Event identifier accepted by the hosted API."
+                    description: "WARN event UUID."
                 }
             },
             additionalProperties: false
@@ -120,7 +120,7 @@ export const tools = [
     {
         name: "get_event_company_intel",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Layoff event company intelligence: the employer behind one WARN Act notice (GET /events/:id/company-intel). Paid endpoint; enriched paid responses include event industry_classification with method, confidence, and coverage_note. Returns x402 challenge in default non-settling mode.",
+        description: "Layoff event company intelligence: the employer behind one WARN Act notice (GET /events/:id/company-intel, $0.03). Returns the linked company profile, aliases, locations, industry_classification and business_sector_impacts (heuristic static table keyed on the employer industry, empty when unknown). Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -129,16 +129,16 @@ export const tools = [
                     type: "string",
                     maxLength: 128,
                     pattern: "^[A-Za-z0-9._-]{1,128}$",
-                    description: "Event identifier accepted by the hosted API."
+                    description: "WARN event UUID."
                 }
             },
             additionalProperties: false
         }
     },
     {
-        name: "get_event_timeline",
+        name: "get_event_history",
         annotations: READ_ONLY_EXTERNAL,
-        description: "WARN layoff event timeline: one notice with version history, status transitions and related events (GET /events/:id/timeline). Paid endpoint; returns x402 challenge in default non-settling mode.",
+        description: "WARN notice amendment history: version-by-version history of one WARN Act layoff notice (GET /events/:id/history, $0.02). Returns event_id, version_count, as_of and versions with change reason, source and employee-count revisions; a notice never amended has one version. Replaces the removed event timeline route. Paid endpoint; returns x402 challenge in default non-settling mode.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -147,7 +147,7 @@ export const tools = [
                     type: "string",
                     maxLength: 128,
                     pattern: "^[A-Za-z0-9._-]{1,128}$",
-                    description: "Event identifier accepted by the hosted API."
+                    description: "WARN event UUID."
                 }
             },
             additionalProperties: false
@@ -156,7 +156,7 @@ export const tools = [
     {
         name: "search_gold_inventory",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Compatibility tool for free inventory-only Ripple Signal search. Returns counts and unlock pricing without revealing signal details.",
+        description: "Free inventory-only Ripple signal search (GET /ripple/search). Returns match counts and unlock pricing without revealing signal details.",
         inputSchema: {
             type: "object",
             properties: {
@@ -172,7 +172,7 @@ export const tools = [
     {
         name: "get_ripple_index",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Layoff ripple signal index (GET /ripple/index). Paid endpoint currently priced at $0.01; returns location-only Ripple index cards with signal IDs, bands, and unlock URLs while withholding companies, employee counts, commercial angles, and impact paths.",
+        description: "Layoff ripple signal index (GET /ripple/index, $0.01): location-only index of Ripple signals, heuristic readouts of downstream business effects of workforce disruption. Returns count, as_of and index cards (region, state, signal type, freshness); company names are withheld. No match is answered 404 unpaid.",
         inputSchema: {
             type: "object",
             properties: {
@@ -197,7 +197,7 @@ export const tools = [
     {
         name: "get_gold_signals",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Layoff ripple signals: downstream business effects of workforce disruption. Compatibility tool for GET /ripple/signals. Paid endpoint currently priced at $0.10; returns Ripple Signals and Ripple Path inventory, challenge-first by default.",
+        description: "Layoff ripple signals: heuristic sales and market signals on downstream business effects of workforce disruption (GET /ripple/signals, $0.10). Returns count, as_of and signals with a commercial angle, heuristic score band and a link to sector-impact detail where it exists. Without q it returns a sampler diversified by event. No match is answered 404 unpaid.",
         inputSchema: {
             type: "object",
             properties: {
@@ -209,11 +209,6 @@ export const tools = [
                 limit: {
                     type: "number",
                     description: "Maximum signals to return. Hosted API caps this at 10."
-                },
-                state: {
-                    type: "string",
-                    enum: ["gold", "watchlist"],
-                    description: "Signal state to request. Defaults to gold."
                 }
             },
             additionalProperties: false
@@ -222,7 +217,7 @@ export const tools = [
     {
         name: "get_gold_brief",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Layoff ripple report. Compatibility tool for GET /ripple/brief. Paid endpoint currently priced at $0.25; returns a Disruption Intelligence Ripple Report, challenge-first by default.",
+        description: "Layoff ripple report: the Disruption Intelligence Ripple Report, a ranked heuristic brief on downstream business effects of workforce disruption (GET /ripple/brief, $0.25). Returns as_of, a readout (headline, commercial angle), inventory counts, top regions, recommended actions and delivered signals. No match is answered 404 unpaid.",
         inputSchema: {
             type: "object",
             properties: {
@@ -247,7 +242,7 @@ export const tools = [
     {
         name: "get_gold_sector_impacts",
         annotations: READ_ONLY_EXTERNAL,
-        description: "Layoff sector impact paths for one Ripple signal. Compatibility tool for GET /ripple/signals/:id/sector-impacts. Paid endpoint currently priced at $0.15; returns Ripple Paths with deep operational spend and downstream sector impacts for one signal, challenge-first by default.",
+        description: "Layoff sector impact paths: downstream vendor categories for one Ripple signal, from a heuristic static table keyed on the employer industry (GET /ripple/signals/:id/sector-impacts, $0.15). Returns impact_count, basis, matched_industries and business_sector_impacts (sector, spend_area, impact_path, buyer uses). Signals whose employer industry is unknown are answered 404 unpaid. Impacts are planning context, not confirmed purchases.",
         inputSchema: {
             type: "object",
             required: ["id"],
@@ -273,8 +268,7 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
             return inspectChallenge(client, endpointArg(args));
         case "analyze_territory_disruption": {
             const zip = requiredStringArg(args, "zip", /^[0-9]{5}$/);
-            const radius = numberArg(args, "radius") ?? 50;
-            return client.get(`/territory/${encodeURIComponent(zip)}/disruption?radius=${encodeURIComponent(String(radius))}`);
+            return client.get(withQuery(`/territory/${encodeURIComponent(zip)}/disruption`, { radius: numberArg(args, "radius") }));
         }
         case "search_company_context": {
             const q = requiredStringArg(args, "q");
@@ -292,9 +286,9 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
             const id = requiredStringArg(args, "id", ID_PATTERN);
             return client.get(`/events/${encodeURIComponent(id)}/company-intel`);
         }
-        case "get_event_timeline": {
+        case "get_event_history": {
             const id = requiredStringArg(args, "id", ID_PATTERN);
-            return client.get(`/events/${encodeURIComponent(id)}/timeline`);
+            return client.get(`/events/${encodeURIComponent(id)}/history`);
         }
         case "search_gold_inventory": {
             return client.get(withQuery("/ripple/search", { q: stringArg(args, "q") }));
@@ -309,8 +303,7 @@ export async function callTool(name, args = {}, client = new DisruptionApiClient
         case "get_gold_signals": {
             return client.get(withQuery("/ripple/signals", {
                 q: stringArg(args, "q"),
-                limit: numberArg(args, "limit"),
-                state: enumArg(args, "state", ["gold", "watchlist"])
+                limit: numberArg(args, "limit")
             }));
         }
         case "get_gold_brief": {

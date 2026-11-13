@@ -85,7 +85,8 @@ export class DisruptionApiClient {
         status: response.status,
         url,
         paymentRequired: false,
-        error: response.text.slice(0, 200)
+        // Surface the service's own refusal (error, message, charged:false) rather than a truncated string.
+        error: typeof data === "string" ? data.slice(0, 1000) : data
       };
     }
 

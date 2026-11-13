@@ -66,12 +66,12 @@ See [examples/claude-desktop-config.json](examples/claude-desktop-config.json).
 | `analyze_territory_disruption` | `GET /territory/:zip/disruption?radius=` | Paid; challenge-first by default |
 | `search_company_context` | `GET /companies/search?q=` | Paid; challenge-first by default |
 | `get_company_risk_summary` | `GET /companies/:id/intelligence` | Paid; challenge-first by default |
-| `get_event_severity` | `GET /events/:id/severity` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
-| `get_event_company_intel` | `GET /events/:id/company-intel` | Paid; challenge-first by default; paid output includes confidence-rated `industry_classification` |
-| `get_event_timeline` | `GET /events/:id/timeline` | Paid; challenge-first by default |
+| `get_event_severity` | `GET /events/:id/severity` | Paid; challenge-first by default; output includes `industry_classification` |
+| `get_event_company_intel` | `GET /events/:id/company-intel` | Paid; challenge-first by default; output includes `industry_classification` |
+| `get_event_history` | `GET /events/:id/history` | Paid at $0.02; challenge-first by default; WARN notice amendment history (replaces the removed timeline route) |
 | `search_gold_inventory` | `GET /ripple/search?q=` | Compatibility tool name; free Ripple inventory counts and unlock pricing only |
 | `get_ripple_index` | `GET /ripple/index?q=&scope=&limit=` | Paid at $0.01; challenge-first by default; returns location-only Ripple index cards |
-| `get_gold_signals` | `GET /ripple/signals?q=&limit=&state=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns Ripple Signals after settlement |
+| `get_gold_signals` | `GET /ripple/signals?q=&limit=` | Compatibility tool name; paid at $0.10; challenge-first by default; returns Ripple Signals after settlement |
 | `get_gold_brief` | `GET /ripple/brief?q=&scope=&limit=` | Compatibility tool name; paid at $0.25; challenge-first by default; returns a Disruption Intelligence Ripple Report after settlement |
 | `get_gold_sector_impacts` | `GET /ripple/signals/:id/sector-impacts` | Compatibility tool name; paid at $0.15; challenge-first by default; returns Ripple Paths after settlement |
 
